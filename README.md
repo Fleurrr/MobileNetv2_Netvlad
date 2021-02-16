@@ -25,5 +25,5 @@ python demo.py --image='imagepath' --cuda
 |  **training data**|Pittsburgh  |
 |  **accuracy**|**R@1**=80.07% **R@5**=91.25% **R@10**=93.99%  |
 |  **time of load network**|**cpu**=0.301s **gpu**=0.337s  |
-|  **time of inference**(single image)|**cpu**=0.124s **gpu**=0.040s  |
+|  **time of inference**(single image)|**cpu**=0.148s **gpu**=0.020s  |
 |  **GPU**|TITAN XP  |

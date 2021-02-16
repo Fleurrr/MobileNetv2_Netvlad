@@ -3,7 +3,7 @@ Netvlad using lightweight framework mobilenet_v2 for feature extraction！The re
 1. Inference demo
 2. Pre-trained model
 3. Sample image
-4. Totorial and description
+4. Totorial and description </br>
 The repository is created by **Ze Huang**
 ## **Usage**
 First, make sure you have installed **python 3.8** environment and downloaded this project repository.<br/>

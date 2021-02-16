@@ -29,12 +29,6 @@ def load_model(weight_path ,cuda):
     model = torch.nn.Module() 
     model.add_module('encoder', encoder)
     net_vlad = netvlad.NetVLAD(num_clusters=64, dim=encoder_dim, vladv2=False)
-    initcache = '/home/huangze/dataset/centroids/mobilenetv2_pitts30k_64_desc_cen.hdf5'
-    with h5py.File(initcache, mode='r') as h5: 
-        clsts = h5.get("centroids")[...]
-        traindescs = h5.get("descriptors")[...]
-        net_vlad.init_params(clsts, traindescs) 
-        del clsts, traindescs
     model.add_module('pool', net_vlad)
     
     if cuda:
@@ -49,27 +43,31 @@ def load_model(weight_path ,cuda):
     
         
 if __name__ == '__main__':
-    cuda=True
+    parser = argparse.ArgumentParser(description='PyTorch MobileNet_v2-Netvlad Demo.')
+    parser.add_argument('--image', type=str, default='sample.png',
+        help='Image file.')
+    parser.add_argument('--cuda', action='store_true',
+        help='Use cuda GPU to speed up network processing speed (default: False)')
+    opt = parser.parse_args()
+        
+    cuda = opt.cuda
+    img_path = opt.image
     if(cuda):
         print('=>Using GPU!')
     else:
         print('=>Using CPU!')
     
-    img_path = '/home/huangze/netvlad_tf_open/pytorch-NetVlad-master/SuperPointPretrainedNetwork/assets/icl_snippet/250.png'
     inp = read_img(img_path, cuda)
     print('==>Successfully load the picture!')
     
     s1 = time.time()
-    weight_path='/home/huangze/netvlad_tf_open/pytorch-NetVlad-master/runs/Feb10_23-17-00_mobilenetv2_netvlad/checkpoints/model_best.pth.tar'
+    weight_path='pretrain-model.pth.tar'
     model = load_model(weight_path ,cuda)
     print('===>Successfully load the network! Using time:', time.time()-s1)
     
     s2 = time.time()
     image_encoding = model.encoder(inp)
-    print(image_encoding)
     vlad_encoding = model.pool(image_encoding) 
-    print(vlad_encoding)
     print('====>Infer time:', time.time()-s2)  
-    
     
     
